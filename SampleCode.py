@@ -16,6 +16,8 @@ DAY=current_time.strftime("%d")
 fileUrl="https://archives.nseindia.com/content/historical/EQUITIES/" + YEAR +"/"+MONTH+"/cm"+DAY+MONTH+YEAR+"bhav.csv.zip"
 print(fileUrl)
 
+print('-'*80)
+
 
 
 intMonth=1
@@ -33,9 +35,11 @@ def month_year_iter( start_month, start_year, end_month, end_year ):
 
 #for m in month_year_iter(1, 2010, 2, 2011):
     #print (m)
+print('-'*80)
 
 import calendar
  
 c = calendar.Calendar()
 for date in c.itermonthdates(2016, 6):
   print(date)
+print('-'*80)
