@@ -26,12 +26,7 @@ __months = {
 
 def __create_download_link(date:int, month:str , year:int) -> str:
     link=f'https://archives.nseindia.com/content/historical/EQUITIES/{year}/{month.upper()}/cm{date}{month.upper()}{year}bhav.csv.zip'
-    print(link)
     return link
-
-def run(func) -> None:
-    t = Thread(target=func)
-    t.start()
 
 def create_link(date:int , month:int , year:int , console_output:bool=False) -> str:
     """returns a link for you to download from nseindia.com:\n\t
@@ -44,10 +39,10 @@ def create_link(date:int , month:int , year:int , console_output:bool=False) -> 
 
             month = __months[month]
             if console_output == True:
-                print(run(func=lambda:__create_download_link(date , month , year)))
-                return run(func=lambda:__create_download_link(date , month , year))
+                print(__create_download_link(date=date, month = month , year = year))
+                return __create_download_link(date=date, month = month , year = year)
             else:
-                return run(func=lambda:__create_download_link(date , month , year))
+                return __create_download_link(date=date, month = month , year = year)
             
             
     except ValueError:

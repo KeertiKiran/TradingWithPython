@@ -1,13 +1,14 @@
 import requests
 import os
 from threading import *
+from zipfile import ZipFile
 
-def __write(filename:str , content):
+def __write(filename:str , content:bytes):
     with open(filename.replace('\\' , '/') , 'wb') as data:
             data.write(content)
 
 def __get(url:str , filename:str):
-    r = requests.get(url=url.replace('\\' , '/') , allow_redirects=True ,timeout=5.5)
+    r = requests.get(url , allow_redirects=True ,timeout=5.5)
     try:
         __write(filename , r.content)
     except FileNotFoundError:
