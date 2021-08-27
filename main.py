@@ -1,33 +1,35 @@
-from sre_constants import SUCCESS
 from download import *
 from getlink import *
 from naming import *
 from unzip import *
-from zipfile import ZipFile
+from zipfile import *
+import tempfile
+import time
 
 
 # Defining things
 global __none
 
-desktop_path = str(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')).replace('\\' , '/')
+__tempfol = tempfile.gettempdir().replace('\\' , '/')
+
+__desktop_path = str(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')).replace('\\' , '/')
 __none = '$None$'
-__output_dir = desktop_path.__add__('/py~outfile')
+__output_dir = __desktop_path.__add__('/py-outfile')
 
-def extract(filepath , extract_to):
-    with ZipFile(filepath, 'r') as zip:
-    # printing all the contents of the zip file
-        zip.printdir()
-        print('Extracting all the files now...')
-        try:
-            zip.extractall(extract_to)
-        except FileExistsError:
-            pass
-        
-        print('Done!')
-
-
-def multi_get(from_date:tuple, to_date):
-    pass
+def extract(filepath:str , extract_to:str):
+    try:
+        with ZipFile(filepath, 'r') as zip:
+        # printing all the contents of the zip file
+            zip.printdir()
+            print('Extracting all the files now...')
+            try:
+                zip.extractall(extract_to)
+            except FileExistsError:
+                pass
+            
+            print('Done!')
+    except FileNotFoundError:
+        print('could not download file: skipping...')
 
 def get(date:int, month:int, year:int , output_dir:str=__none) -> None:
     """Will download the file with the given date. and unzip in `output_dir`...\n
@@ -41,9 +43,29 @@ def get(date:int, month:int, year:int , output_dir:str=__none) -> None:
         output_folder = __output_dir
         del tmp
     
-    file_name = f'./cache/{name(file_link)}'
+    file_name = f'{__tempfol}/{name(file_link)}'
+    while True:
+        i = 0
+        try:
+            download(url=create_link(date , month , year) , filename=file_name)
+            time.sleep(i)
+            extract(file_name , output_folder)
+            break
+        except BadZipfile:
+            i += 1
+            try:
 
-    download(url=create_link(date , month , year) , filename=file_name)
-    extract(file_name , output_folder)
+                os.remove(file_name)
+            except:
+                pass
+            if i > 7:
+                print('could not download the file')
+                break
+            continue
+    try:
+        os.remove(file_name)
+    except:
+        pass
 
-get(26 , 12 , 2017)
+def multi_get(from_date:tuple, to_date:tuple):
+    pass

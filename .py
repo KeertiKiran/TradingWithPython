@@ -1,4 +1,3 @@
-import os
-desktop_path = str(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')).replace('\\' , '/')
+from zipfile import *
+import zipfile
 
-print(desktop_path)

@@ -3,12 +3,25 @@ import os
 from threading import *
 from zipfile import ZipFile
 
+def __getcurrent(thread_id:Thread):
+    while True:
+        if thread_id.is_alive() == False:
+            return True
+
 def __write(filename:str , content:bytes):
     with open(filename.replace('\\' , '/') , 'wb') as data:
             data.write(content)
 
-def __get(url:str , filename:str):
-    r = requests.get(url , allow_redirects=True ,timeout=5.5)
+def download(url:str , filename:str):
+    """
+    
+    Will download the file from the url given and save it to given path.
+
+    """
+    try:
+        r = requests.get(url , allow_redirects=True ,timeout=5.5)
+    except requests.exceptions.ReadTimeout:
+        pass
     try:
         __write(filename , r.content)
     except FileNotFoundError:
@@ -18,12 +31,5 @@ def __get(url:str , filename:str):
         os.makedirs(dir_path , exist_ok=True)
         print(dir_path)
         __write(filename , r.content)
-
-def download(url:str , filename:str) -> str:
-    """
-    
-    Will download the file from the url given and save it to given path.
-
-    """
-    d = Thread(target=lambda:__get(url, filename))
-    d.start()
+    except UnboundLocalError:
+        pass
