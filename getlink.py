@@ -1,15 +1,15 @@
 import datetime as dt
 from threading import Thread
 
-global black_listed_days
-global months
+global __black_listed_days
+global __months
 
-black_listed_days = [
+__black_listed_days = [
     'SAT',
     'SUN'
     ]
 
-months = {
+__months = {
     1:'JAN',
     2:'FEB',
     3:'MAR',
@@ -33,19 +33,19 @@ def run(func) -> None:
     t = Thread(target=func)
     t.start()
 
-def create_link(date:int , month:int , year:int , console_output:bool=True) -> str:
+def create_link(date:int , month:int , year:int , console_output:bool=False) -> str:
     """returns a link for you to download from nseindia.com:\n\t
     IT WILL NOT DOWNLOAD IT!"""
     try:
-        if (dt.date(year,month,date).strftime('%a')).upper() in black_listed_days:
+        if (dt.date(year,month,date).strftime('%a')).upper() in __black_listed_days:
             day= (dt.date(year,month,date).strftime('%A'))
             print(f'error: The date given refers to a week-end ( {date}-{month}-{year} is a {day} )')
         else:
 
-            month = months[month]
-            return run(func=lambda:create_download_link(date , month , year))
+            month = __months[month]
+            yield run(func=lambda:create_download_link(date , month , year))
             if console_output == True:
-                print(month)
+                print(run(func=lambda:create_download_link(date , month , year)))
             
     except ValueError:
         print(f'error: {month} is not a valid month number')
