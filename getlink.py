@@ -24,7 +24,7 @@ __months = {
     12:'DEC',
     }
 
-def create_download_link(date:int, month:str , year:int) -> str:
+def __create_download_link(date:int, month:str , year:int) -> str:
     link=f'https://archives.nseindia.com/content/historical/EQUITIES/{year}/{month.upper()}/cm{date}{month.upper()}{year}bhav.csv.zip'
     print(link)
     return link
@@ -39,13 +39,16 @@ def create_link(date:int , month:int , year:int , console_output:bool=False) -> 
     try:
         if (dt.date(year,month,date).strftime('%a')).upper() in __black_listed_days:
             day= (dt.date(year,month,date).strftime('%A'))
-            print(f'error: The date given refers to a week-end ( {date}-{month}-{year} is a {day} )')
+            raise Exception(f'error: The date given refers to a week-end ( {date}-{month}-{year} is a {day} )')
         else:
 
             month = __months[month]
-            yield run(func=lambda:create_download_link(date , month , year))
             if console_output == True:
-                print(run(func=lambda:create_download_link(date , month , year)))
+                print(run(func=lambda:__create_download_link(date , month , year)))
+                return run(func=lambda:__create_download_link(date , month , year))
+            else:
+                return run(func=lambda:__create_download_link(date , month , year))
+            
             
     except ValueError:
         print(f'error: {month} is not a valid month number')
