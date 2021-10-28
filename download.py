@@ -25,11 +25,15 @@ def download(url:str , filename:str):
     try:
         __write(filename , r.content)
     except FileNotFoundError:
-        remove_file_name = filename.split('/')[-1]
-        print(remove_file_name)
-        dir_path = filename.replace(f'/{remove_file_name}' , '').replace('//' , '\\')
-        os.makedirs(dir_path , exist_ok=True)
-        print(dir_path)
-        __write(filename , r.content)
+        _extracted_from_download_10(filename, r)
     except UnboundLocalError:
         pass
+
+# TODO Rename this here and in `download`
+def _extracted_from_download_10(filename, r):
+    remove_file_name = filename.split('/')[-1]
+    print(remove_file_name)
+    dir_path = filename.replace(f'/{remove_file_name}' , '').replace('//' , '\\')
+    os.makedirs(dir_path , exist_ok=True)
+    print(dir_path)
+    __write(filename , r.content)

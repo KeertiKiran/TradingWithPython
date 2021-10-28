@@ -1,7 +1,6 @@
 from download import *
 from getlink import *
 from naming import *
-from unzip import *
 from zipfile import *
 import tempfile
 import time

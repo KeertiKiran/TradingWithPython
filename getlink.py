@@ -25,8 +25,7 @@ __months = {
     }
 
 def __create_download_link(date:int, month:str , year:int) -> str:
-    link=f'https://archives.nseindia.com/content/historical/EQUITIES/{year}/{month.upper()}/cm{date}{month.upper()}{year}bhav.csv.zip'
-    return link
+    return f'https://archives.nseindia.com/content/historical/EQUITIES/{year}/{month.upper()}/cm{date}{month.upper()}{year}bhav.csv.zip'
 
 def create_link(date:int , month:int , year:int , console_output:bool=False) -> str:
     """returns a link for you to download from nseindia.com:\n\t
@@ -38,14 +37,8 @@ def create_link(date:int , month:int , year:int , console_output:bool=False) -> 
         else:
 
             month = __months[month]
-            if console_output == True:
+            if console_output:
                 print(__create_download_link(date=date, month = month , year = year))
-                return __create_download_link(date=date, month = month , year = year)
-            else:
-                return __create_download_link(date=date, month = month , year = year)
-            
-            
-    except ValueError:
-        print(f'error: {month} is not a valid month number')
-    except IndexError:
+            return __create_download_link(date=date, month = month , year = year)
+    except (ValueError, IndexError):
         print(f'error: {month} is not a valid month number')
