@@ -18,13 +18,9 @@ __output_dir = __desktop_path.__add__('/py-outfile')
 def extract(filepath:str , extract_to:str):
     try:
         with ZipFile(filepath, 'r') as zip:
-        # printing all the contents of the zip file
+            # Extract all the contents of zip file in current directory
             zip.printdir()
-            print('Extracting all the files now...')
-            try:
-                zip.extractall(extract_to)
-            except FileExistsError:
-                pass
+            zip.extractall(extract_to)
             
             print('Done!')
     except FileNotFoundError:

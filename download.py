@@ -14,9 +14,10 @@ def __write(filename:str , content:bytes):
 
 def download(url:str , filename:str):
     """
-    
-    Will download the file from the url given and save it to given path.
-
+    Downloads a file from a given url.
+    :param url: The url to download the file from.
+    :param filename: The filename to save the file as.
+    :return: None
     """
     try:
         r = requests.get(url , allow_redirects=True ,timeout=5.5)
@@ -29,7 +30,7 @@ def download(url:str , filename:str):
     except UnboundLocalError:
         pass
 
-# TODO Rename this here and in `download`
+# TODO: Add a way to download multiple files at once.
 def _extracted_from_download_10(filename, r):
     remove_file_name = filename.split('/')[-1]
     print(remove_file_name)
